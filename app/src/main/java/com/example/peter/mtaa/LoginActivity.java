@@ -6,7 +6,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText InputEmail;
     EditText InputPassword;
-
+    Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +27,40 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         InputEmail = (EditText)findViewById(R.id.InputEmail);
         InputPassword = (EditText)findViewById(R.id.InputPassword);
+        btn = (Button)findViewById(R.id.ButtonSignIn);
+        btn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d("asd","asd");
+                Login();
+                return false;
+            }
+        });
     }
 
 
     protected void Login()
     {
-        String localEmail = "pe3k778899@azet.sk";
-        String localPassword = "123456";
+        String localEmail = "p3@a.sk";
+        String localPassword = "3";
         String email = InputEmail.getText().toString();
         String password = InputPassword.getText().toString();
 
-        if(email.equals(localEmail) && password.equals(localPassword))
+
+
+        if(email.equals(localEmail) && password.equals(localPassword) && isValidEmail(email))
         {
             navigateToHomeActivity();
         }else
         {
-            //error stav
+            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
         }
 
 
+    }
+
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     public void navigateToHomeActivity()
@@ -50,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
-
 
 
 
