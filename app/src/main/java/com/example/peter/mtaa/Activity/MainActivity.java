@@ -7,16 +7,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.example.peter.mtaa.API.REST;
+import com.example.peter.mtaa.Containers.RoomAdapter;
+import com.example.peter.mtaa.Data.Room;
 import com.example.peter.mtaa.R;
+import com.loopj.android.http.RequestParams;
+
+import java.util.ArrayList;
+
+import static com.example.peter.mtaa.R.id.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public REST api;
+    ListView listview;
 
 
     @Override
@@ -35,9 +45,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Log.e("Created Main","123");
 
+        api = new REST(this);
 
-        api = new REST();
 
     }
 
@@ -75,12 +86,19 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_room) {
-            api.restinit(getApplicationContext());
+
+            Log.e("Clicked","Parse");
+            RequestParams params = new RequestParams();
+            //findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+           api.restinit("Rooms", params);
 
         } else if (id == R.id.nav_hostel) {
 
@@ -98,5 +116,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public void writeListRoom(ArrayList<Room> listRoom) {
+        listview = (ListView)findViewById(List);
+        RoomAdapter customAdapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
+        //customAdapter.notifyAll();
+        listview.setAdapter(customAdapter);
+
     }
 }

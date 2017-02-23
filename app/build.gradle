@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:design:25.1.1'
     testCompile 'junit:junit:4.12'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'org.code-house:jackson:2.7.6'
 }
