@@ -57,7 +57,7 @@ import java.util.List;
 
                 if(p.isActual())
                 {
-                    tt3.setBackgroundColor(0xb8a9a9);
+                    tt1.setBackgroundColor(0xA9EB1D);
                 }
             }
 

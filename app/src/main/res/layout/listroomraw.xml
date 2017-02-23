@@ -23,7 +23,7 @@
                 android:gravity="left"
                 android:layout_weight="1"
                 android:typeface="monospace"
-                android:height="40dp"
+                android:height="100dp"
                 android:background="@android:color/background_light"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"

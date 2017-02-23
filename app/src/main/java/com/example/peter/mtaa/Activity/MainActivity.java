@@ -14,7 +14,9 @@ import android.widget.ListView;
 
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
+import com.example.peter.mtaa.Containers.hostelAdapter;
 import com.example.peter.mtaa.Data.Room;
+import com.example.peter.mtaa.Data.hostelEnum;
 import com.example.peter.mtaa.R;
 import com.loopj.android.http.RequestParams;
 
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        //menu.clear();
+        //return super.onPrepareOptionsMenu(menu);
         return true;
     }
 
@@ -91,16 +95,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         int id = item.getItemId();
+        RequestParams params = new RequestParams();
 
         if (id == R.id.nav_room) {
-
             Log.e("Clicked","Parse");
-            RequestParams params = new RequestParams();
             //findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-
            api.restinit("Rooms", params);
 
         } else if (id == R.id.nav_hostel) {
+            writeHostels();
 
         } else if (id == R.id.nav_Type) {
 
@@ -119,6 +122,15 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void writeHostels() {
+        ArrayList<String> zoznam = hostelEnum.getAllNames();
+        listview = (ListView)findViewById(List);
+        hostelAdapter customAdapter = new hostelAdapter(this, R.layout.listroomraw, zoznam);
+        //customAdapter.notifyAll();
+        listview.setAdapter(customAdapter);
+
+    }
+
     public void writeListRoom(ArrayList<Room> listRoom) {
         listview = (ListView)findViewById(List);
         RoomAdapter customAdapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
@@ -126,4 +138,8 @@ public class MainActivity extends AppCompatActivity
         listview.setAdapter(customAdapter);
 
     }
+
+
+
+
 }
