@@ -31,6 +31,12 @@ public enum hostelEnum {
         }
     }
 
+    public static hostelEnum getByName(String string)
+    {
+        return hostelEnum.valueOf(string);
+    }
+
+
     public String getName() {
         return name;
     }

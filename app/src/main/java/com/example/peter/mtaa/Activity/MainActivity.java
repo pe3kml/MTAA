@@ -10,10 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
+import com.example.peter.mtaa.Containers.bedsAdapter;
 import com.example.peter.mtaa.Containers.hostelAdapter;
 import com.example.peter.mtaa.Data.Room;
 import com.example.peter.mtaa.Data.hostelEnum;
@@ -29,7 +32,6 @@ public class MainActivity extends AppCompatActivity
 
     public REST api;
     ListView listview;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Log.e("Created Main","123");
+
+
 
         api = new REST(this);
 
@@ -100,13 +104,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_room) {
             Log.e("Clicked","Parse");
             //findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-           api.restinit("Rooms", params);
+           api.restinit("Rooms", params, "");
 
         } else if (id == R.id.nav_hostel) {
             writeHostels();
 
         } else if (id == R.id.nav_Type) {
-
+            writeBeds();
         } else if (id == R.id.nav_Equipment) {
 
         } else if (id == R.id.nav_offline_mode) {
@@ -121,25 +125,78 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void writeBeds() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Number of beds");
+        ArrayList<Integer> zoznam = new ArrayList<Integer>();
+        for(int i = 0; i < 7; i++)
+            zoznam.add(i);
+        listview = (ListView)findViewById(List);
+        bedsAdapter hostel_adapter = new bedsAdapter(this, R.layout.beds, zoznam);
+        //customAdapter.notifyAll();
+        listview.setAdapter(hostel_adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+
+                Object selected = adapter.getItemAtPosition(position);
+
+                //Log.d("Selected Hostel",Integer.toString(position));
+                RequestParams params = new RequestParams();
+                //params.put("hostel", sendback.getValue());
+                api.restinit("Rooms", params, "?where=beds%3D"+selected.toString());
+            }
+        });
+
+    }
+
+
 
     public void writeHostels() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Student hostels");
         ArrayList<String> zoznam = hostelEnum.getAllNames();
+        Log.d("Adapter created","Hostels");
         listview = (ListView)findViewById(List);
-        hostelAdapter customAdapter = new hostelAdapter(this, R.layout.listroomraw, zoznam);
+        hostelAdapter hostel_adapter = new hostelAdapter(this, R.layout.hostels, zoznam);
         //customAdapter.notifyAll();
-        listview.setAdapter(customAdapter);
+        listview.setAdapter(hostel_adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+
+                String selected = (String) adapter.getItemAtPosition(position);
+                //Log.d("Selected Hostel",Integer.toString(position));
+                hostelEnum sendback = hostelEnum.getByName(selected);
+                RequestParams params = new RequestParams();
+                //params.put("hostel", sendback.getValue());
+                api.restinit("Rooms", params, "?where=hostel%3D"+Integer.toString(sendback.getValue()));
+            }
+        });
 
     }
 
     public void writeListRoom(ArrayList<Room> listRoom) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Rooms");
         listview = (ListView)findViewById(List);
-        RoomAdapter customAdapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
+        RoomAdapter room_adapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
         //customAdapter.notifyAll();
-        listview.setAdapter(customAdapter);
+        listview.setAdapter(room_adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id)
+            {
+                Room selected = (Room) adapter.getItemAtPosition(position);
+                Log.d("Cena", Double.toString(selected.getPrice()));
 
+            }
+        });
     }
-
-
 
 
 }

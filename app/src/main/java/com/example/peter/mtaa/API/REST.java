@@ -25,7 +25,7 @@ public class REST
 
     }
 
-    public void restinit(final String http, final RequestParams params)
+    public void restinit(final String http, final RequestParams params, String arg)
     {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("application-id", "0E4865CB-A0FD-8F5F-FF5D-0F10B0B9D700");
@@ -33,7 +33,8 @@ public class REST
 
         Log.e("JSON","Parse");
         //bude treba dorobit nejaky znak ze to nacitava zo servera
-        client.get("http://api.backendless.com/v1/data/" + http, params, new AsyncHttpResponseHandler() {
+        String url = new String("http://api.backendless.com/v1/data/"+http+arg);
+        client.get(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
@@ -47,7 +48,6 @@ public class REST
                 //tu bude treba dorobit rozoznavanie jednotlivych kodov
                 //Toast.makeText(applicationContext, "Error!", Toast.LENGTH_LONG).show();
             }
-
         });
 
     }

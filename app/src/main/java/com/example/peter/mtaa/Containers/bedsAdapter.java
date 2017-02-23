@@ -1,7 +1,6 @@
 package com.example.peter.mtaa.Containers;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import java.util.ArrayList;
  * Created by Peter on 23/Feb/17.
  */
 
+public class bedsAdapter extends ArrayAdapter {
 
-public class hostelAdapter extends ArrayAdapter{
-
-
-    public hostelAdapter(Context context, int resource, ArrayList<String> items) {
+    public bedsAdapter(Context context, int resource, ArrayList<Integer> items) {
         super(context, resource, items);
     }
 
@@ -34,16 +31,14 @@ public class hostelAdapter extends ArrayAdapter{
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.hostels, null);
+            v = vi.inflate(R.layout.beds, null);
         }
 
-        String p = (String) getItem(position);
+        int p = (int) getItem(position);
 
-        if (p != null) {
-            TextView tt1 = (TextView) v.findViewById(R.id.itemHostel);
 
-            tt1.setText(p);
-        }
+        TextView tt1 = (TextView) v.findViewById(R.id.itemBed);
+        tt1.setText(Integer.toString(p) + " lôžkova");
 
         return v;
     }
