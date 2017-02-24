@@ -1,10 +1,12 @@
 package com.example.peter.mtaa.Activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.peter.mtaa.API.REST;
@@ -26,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 
 import static com.example.peter.mtaa.R.id.List;
+import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +43,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
+        a.setVisibility(View.INVISIBLE);
+        LinearLayout b = (LinearLayout) findViewById(R.id.detail1);
+        a.setVisibility(View.INVISIBLE);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,12 +150,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
+
                 Object selected = adapter.getItemAtPosition(position);
 
                 //Log.d("Selected Hostel",Integer.toString(position));
                 RequestParams params = new RequestParams();
                 //params.put("hostel", sendback.getValue());
                 api.restinit("Rooms", params, "?where=beds%3D"+selected.toString());
+
             }
         });
 
@@ -169,12 +180,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
+
+
                 String selected = (String) adapter.getItemAtPosition(position);
                 //Log.d("Selected Hostel",Integer.toString(position));
                 hostelEnum sendback = hostelEnum.getByName(selected);
                 RequestParams params = new RequestParams();
                 //params.put("hostel", sendback.getValue());
                 api.restinit("Rooms", params, "?where=hostel%3D"+Integer.toString(sendback.getValue()));
+
             }
         });
 
@@ -194,9 +208,62 @@ public class MainActivity extends AppCompatActivity
                 Room selected = (Room) adapter.getItemAtPosition(position);
                 Log.d("Cena", Double.toString(selected.getPrice()));
 
+                LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
+                a.setVisibility(View.VISIBLE);
+                ListView b = (ListView) findViewById(R.id.List);
+                b.setVisibility(View.GONE);
+
             }
         });
+
+
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+
+                Log.v("long clicked","pos: " + pos);
+
+                //showDialog(MainActivity, "a", );
+                alert();
+
+
+
+
+                return true;
+            }
+        });
+
+
     }
 
 
+    public void alert()
+    {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Delete item...");
+        dialog.setMessage("Do you want to delete this item?");
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        dialog.setPositiveButton("Yes, I do", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                log.d("aaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaa");
+            }
+        });
+        dialog.show();
+    }
+
+
+
+
 }
+
+
+
+
+
+

@@ -13,6 +13,10 @@
     tools:context="com.example.peter.mtaa.Activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <include
+        android:id="@+id/detail1"
+        layout="@layout/detailroom"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <!--app:srcCompat="@android:drawable/ic_menu_gallery"-->
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                                <ImageView
+                                    android:layout_width="383dp"
+                                    android:layout_height="187dp"
+                                    app:srcCompat="@android:drawable/ic_menu_crop"
+                                    android:id="@+id/imageView3" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Hostel"
+                            android:ems="10"
+                            android:id="@+id/hostel"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Price"
+                            android:ems="10"
+                            android:id="@+id/price"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Beds"
+                            android:ems="10"
+                            android:id="@+id/beds"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Reconstructed"
+                            android:ems="10"
+                            android:id="@+id/reconstructed"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Owner"
+                            android:ems="10"
+                            android:id="@+id/username"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Internet"
+                            android:ems="10"
+                            android:id="@+id/internet"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+
+                                <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Info"
+                            android:ems="10"
+                            android:id="@+id/info"
+                                    android:clickable="false"
+                                    android:editable="false"
+                                    android:contextClickable="false"
+                                    android:enabled="false" />
+                        </LinearLayout>
+                </ScrollView>
+
+        </TableRow>
+</TableLayout>
