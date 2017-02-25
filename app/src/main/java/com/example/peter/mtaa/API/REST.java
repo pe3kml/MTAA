@@ -54,8 +54,7 @@ public class REST
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                //tu bude treba dorobit rozoznavanie jednotlivych kodov
-                //Toast.makeText(applicationContext, "Error!", Toast.LENGTH_LONG).show();
+               ref_activity.alertSuccess("No internet");
             }
         });
 
@@ -98,6 +97,7 @@ public class REST
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("Put",Integer.toString(statusCode));
+                ref_activity.alertSuccess("No internet");
             }
         });
 
@@ -112,7 +112,8 @@ public class REST
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Delete", Integer.toString(statusCode));
-                ref_activity.alertSuccess();
+                ref_activity.alertSuccess("Delete successfull");
+                restinit("Rooms", null, "");
             }
 
             @Override

@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -145,6 +146,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void writeBeds() {
+        changeVisibility();
+
+        listview.setVisibility(View.VISIBLE);
+        LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
+        a.setVisibility(View.GONE);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Number of beds");
         ArrayList<Integer> zoznam = new ArrayList<Integer>();
@@ -176,6 +183,12 @@ public class MainActivity extends AppCompatActivity
 
 
     public void writeHostels() {
+        changeVisibility();
+
+        listview.setVisibility(View.VISIBLE);
+        LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
+        a.setVisibility(View.GONE);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Student hostels");
         ArrayList<String> zoznam = hostelEnum.getAllNames();
@@ -205,9 +218,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void writeListRoom(ArrayList<Room> listRoom) {
+        changeVisibility();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Rooms");
         listview = (ListView)findViewById(List);
+
+        listview.setVisibility(View.VISIBLE);
+        LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
+        a.setVisibility(View.GONE);
+
         RoomAdapter room_adapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
         //customAdapter.notifyAll();
         listview.setAdapter(room_adapter);
@@ -291,9 +310,9 @@ public class MainActivity extends AppCompatActivity
         ImageButton btn2 = (ImageButton) findViewById(R.id.saveButton);
 
         btn.setVisibility(View.VISIBLE);
-        btn.setOnTouchListener(new View.OnTouchListener() {
+        final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
                 EditText set = (EditText)findViewById(R.id.hostel);
                 set.setEnabled(true);
                 set.setClickable(true);
@@ -316,17 +335,26 @@ public class MainActivity extends AppCompatActivity
                 set.setEnabled(true);
                 set.setClickable(true);
 
-                return false;
+                return true;
+            }
 
+        });
+
+       btn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return gestureDetector.onTouchEvent(event);
             }
         });
 
 
 
         btn2.setVisibility(View.VISIBLE);
-        btn2.setOnTouchListener(new View.OnTouchListener() {
+
+        final GestureDetector gestureDetector2 = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
 
                 TextView a = (TextView)findViewById(R.id.hostel);
                 selected.setHostel( a.getText().toString());
@@ -361,13 +389,22 @@ public class MainActivity extends AppCompatActivity
                 a.setEnabled(false);
                 a.setClickable(false);
 
+
                 try {
                     api.post(selected);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
                 }
+                return true;
+            }
 
-                return false;
+        });
+
+        btn2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return gestureDetector2.onTouchEvent(event);
             }
         });
 
@@ -378,10 +415,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void alertSuccess()
+    public void alertSuccess(String string)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Delete successful");
+        dialog.setTitle(string);
         dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 return;
@@ -391,8 +428,16 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void changeVisibility()
+    {
+        ImageButton editButton = (ImageButton)findViewById(R.id.editButton);
+        editButton.setVisibility(View.GONE);
+        ImageButton saveButton = (ImageButton)findViewById(R.id.saveButton);
+        saveButton.setVisibility(View.GONE);
 
 
+
+    }
 
 
 }
