@@ -12,10 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
@@ -26,16 +30,19 @@ import com.example.peter.mtaa.Data.hostelEnum;
 import com.example.peter.mtaa.R;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 import static com.example.peter.mtaa.R.id.List;
-import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public REST api;
     ListView listview;
+    Room selected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         Log.e("Created Main","123");
 
-
+        ImageButton btn = (ImageButton) findViewById(R.id.editButton);
+        btn.setVisibility(View.GONE);
+        btn = (ImageButton) findViewById(R.id.saveButton);
+        btn.setVisibility(View.GONE);
 
         api = new REST(this);
 
@@ -205,9 +215,9 @@ public class MainActivity extends AppCompatActivity
         {
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id)
             {
-                Room selected = (Room) adapter.getItemAtPosition(position);
+                selected = (Room) adapter.getItemAtPosition(position);
                 Log.d("Cena", Double.toString(selected.getPrice()));
-
+                showDetails(selected);
                 LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
                 a.setVisibility(View.VISIBLE);
                 ListView b = (ListView) findViewById(R.id.List);
@@ -219,14 +229,13 @@ public class MainActivity extends AppCompatActivity
 
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long id) {
-                // TODO Auto-generated method stub
+            public boolean onItemLongClick(AdapterView<?> adapter, View v, int position, long id) {
 
-                Log.v("long clicked","pos: " + pos);
+
+                //Log.v("long clicked","pos: " + pos);
 
                 //showDialog(MainActivity, "a", );
-                alert();
+                alert(selected = (Room) adapter.getItemAtPosition(position));
 
 
 
@@ -239,7 +248,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void alert()
+    public void alert(final Room room)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Delete item...");
@@ -251,11 +260,137 @@ public class MainActivity extends AppCompatActivity
         });
         dialog.setPositiveButton("Yes, I do", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                log.d("aaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaa");
+                api.delete(room);
             }
         });
         dialog.show();
     }
+
+
+    public void showDetails(final Room selected)
+    {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Detail");
+        EditText set = (EditText)findViewById(R.id.hostel);
+        set.setText(selected.getHostel());
+        set = (EditText)findViewById(R.id.price);
+        set.setText(Double.toString(selected.getPrice()));
+        set = (EditText)findViewById(R.id.beds);
+        set.setText(Integer.toString(selected.getBeds()));
+        set = (EditText)findViewById(R.id.reconstructed);
+        if(selected.isReconstructed()) set.setText("Reconstructed");
+        set = (EditText)findViewById(R.id.username);
+        set.setText(selected.getUsername());
+        set = (EditText)findViewById(R.id.internet);
+        if(selected.isInternet()) set.setText("Yes");
+        set = (EditText)findViewById(R.id.info);
+        set.setText(selected.getInfo());
+
+        ImageButton btn = (ImageButton) findViewById(R.id.editButton);
+        ImageButton btn2 = (ImageButton) findViewById(R.id.saveButton);
+
+        btn.setVisibility(View.VISIBLE);
+        btn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                EditText set = (EditText)findViewById(R.id.hostel);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.price);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.beds);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.reconstructed);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.username);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.internet);
+                set.setEnabled(true);
+                set.setClickable(true);
+                set = (EditText)findViewById(R.id.info);
+                set.setEnabled(true);
+                set.setClickable(true);
+
+                return false;
+
+            }
+        });
+
+
+
+        btn2.setVisibility(View.VISIBLE);
+        btn2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                TextView a = (TextView)findViewById(R.id.hostel);
+                selected.setHostel( a.getText().toString());
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.price);
+                selected.setPrice(Double.parseDouble(a.getText().toString()));
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.beds);
+                selected.setBeds(Integer.parseInt(a.getText().toString()));
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.reconstructed);
+                if(a.getText().toString().toLowerCase().equals("yes"))
+                    selected.setReconstructed(true);
+                else selected.setReconstructed(false);
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.username);
+                selected.setUsername(a.getText().toString());
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.internet);
+                if(a.getText().toString().toLowerCase().equals("yes"))
+                    selected.setInternet(true);
+                else selected.setInternet(false);
+                a.setEnabled(false);
+                a.setClickable(false);
+                a = (TextView)findViewById(R.id.info);
+                selected.setInfo(a.getText().toString());
+                a.setEnabled(false);
+                a.setClickable(false);
+
+                try {
+                    api.post(selected);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+        });
+
+
+
+
+        btn2.setSaveEnabled(false);
+
+    }
+
+    public void alertSuccess()
+    {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Delete successful");
+        dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        dialog.show();
+    }
+
+
 
 
 

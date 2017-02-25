@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.peter.mtaa.Activity.MainActivity;
 import com.example.peter.mtaa.Data.Room;
+import com.example.peter.mtaa.Data.hostelEnum;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +68,8 @@ public class parseJSON {
                 room.setImage(null);
                 room.setDate(null);
                 room.setBeds(finall.getInt("beds"));
+                room.setHostel(hostelEnum.getByValue(finall.getInt("hostel")).toString());
+                room.setObject(finall.getString("objectId"));
 
                 listRoom.add(room);
             }

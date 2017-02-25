@@ -26,6 +26,13 @@
                                     app:srcCompat="@android:drawable/ic_menu_crop"
                                     android:id="@+id/imageView3" />
 
+                                <TextView
+                                    android:text="Hostel:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView"
+                                    android:height="20dp" />
+
                                 <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -38,6 +45,13 @@
                                     android:contextClickable="false"
                                     android:enabled="false" />
 
+                                <TextView
+                                    android:text="Price:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView2"
+                                    android:height="20dp" />
+
                                 <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -49,6 +63,13 @@
                                     android:editable="false"
                                     android:contextClickable="false"
                                     android:enabled="false" />
+
+                                <TextView
+                                    android:text="Number of beds:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView3"
+                                    android:height="20dp" />
 
                                 <EditText
                             android:layout_width="match_parent"
@@ -74,6 +95,13 @@
                                     android:contextClickable="false"
                                     android:enabled="false" />
 
+                                <TextView
+                                    android:text="Owner:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView4"
+                                    android:height="20dp" />
+
                                 <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -86,6 +114,13 @@
                                     android:contextClickable="false"
                                     android:enabled="false" />
 
+                                <TextView
+                                    android:text="Internet:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView5"
+                                    android:height="20dp" />
+
                                 <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -97,6 +132,13 @@
                                     android:editable="false"
                                     android:contextClickable="false"
                                     android:enabled="false" />
+
+                                <TextView
+                                    android:text="More info:"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView6"
+                                    android:height="20dp" />
 
                                 <EditText
                             android:layout_width="match_parent"

@@ -14,6 +14,8 @@ public class Room {
     }
 
     private int room_id;
+
+    private String hostel;
     private String username;
     private boolean reconstructed;
     private double price;
@@ -23,6 +25,23 @@ public class Room {
     private Date date;
     private int beds;
     private boolean actual;
+    private String object;
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
+    public String getHostel() {
+        return hostel;
+    }
+
+    public void setHostel(String hostel) {
+        this.hostel = hostel;
+    }
 
     public int getRoom_id() {
         return room_id;

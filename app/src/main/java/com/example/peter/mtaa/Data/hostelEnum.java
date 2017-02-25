@@ -36,6 +36,11 @@ public enum hostelEnum {
         return hostelEnum.valueOf(string);
     }
 
+    public static int getInt(hostelEnum a) {
+        hostelEnum tax = a;
+        return tax.getValue();
+    }
+
 
     public String getName() {
         return name;
