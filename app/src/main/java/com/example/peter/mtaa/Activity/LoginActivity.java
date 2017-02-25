@@ -36,6 +36,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    *
+    * Static login
+    *
+    * */
 
     protected void Login()
     {
@@ -43,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         String localPassword = "3";
         String email = InputEmail.getText().toString();
         String password = InputPassword.getText().toString();
-
-
 
         if(email.equals(localEmail) && password.equals(localPassword) && isValidEmail(email))
         {
@@ -60,6 +63,11 @@ public class LoginActivity extends AppCompatActivity {
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
+
+    /*
+    * Start main acitivity
+    *
+    * */
 
     public void navigateToHomeActivity()
     {

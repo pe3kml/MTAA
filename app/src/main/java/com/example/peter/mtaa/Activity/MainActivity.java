@@ -112,6 +112,11 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     *  Choosing activity from menu
+     *
+     */
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
@@ -145,6 +150,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /*
+        Showing enums in submenu (numbers of beds)
+        Selecting rooms according to beds
+     */
+
     public void writeBeds() {
         changeVisibility();
 
@@ -166,10 +176,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-
-
                 Object selected = adapter.getItemAtPosition(position);
-
                 //Log.d("Selected Hostel",Integer.toString(position));
                 RequestParams params = new RequestParams();
                 //params.put("hostel", sendback.getValue());
@@ -180,8 +187,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
+      /*
+        Showing enums in submenu (hostels)
+        Selecting rooms according to hostels
+     */
     public void writeHostels() {
         changeVisibility();
 
@@ -203,8 +212,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
-
-
                 String selected = (String) adapter.getItemAtPosition(position);
                 //Log.d("Selected Hostel",Integer.toString(position));
                 hostelEnum sendback = hostelEnum.getByName(selected);
@@ -216,6 +223,12 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
+    /*
+    *
+    *   Showing list of rooms and action listener for showing details on room
+    *   Action listener for alert to delete
+    * */
 
     public void writeListRoom(ArrayList<Room> listRoom) {
         changeVisibility();
@@ -249,16 +262,9 @@ public class MainActivity extends AppCompatActivity
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View v, int position, long id) {
-
-
                 //Log.v("long clicked","pos: " + pos);
-
                 //showDialog(MainActivity, "a", );
                 alert(selected = (Room) adapter.getItemAtPosition(position));
-
-
-
-
                 return true;
             }
         });
@@ -266,7 +272,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    /*
+    *
+    *  Action listener for deleting room
+    *
+    * */
     public void alert(final Room room)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -285,10 +295,15 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /*
+    *
+    *   Showing details of room in gui
+    *   Action listener for editing details
+    *   Action listener for saving details
+    * */
 
     public void showDetails(final Room selected)
     {
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Detail");
         EditText set = (EditText)findViewById(R.id.hostel);
@@ -389,9 +404,8 @@ public class MainActivity extends AppCompatActivity
                 a.setEnabled(false);
                 a.setClickable(false);
 
-
                 try {
-                    api.post(selected);
+                    api.put(selected);
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
@@ -407,14 +421,14 @@ public class MainActivity extends AppCompatActivity
                 return gestureDetector2.onTouchEvent(event);
             }
         });
-
-
-
-
         btn2.setSaveEnabled(false);
 
     }
 
+    /*
+    *   Alert for showing message
+    *
+    * */
     public void alertSuccess(String string)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -427,6 +441,10 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /*
+    *   Change visibilty of edit and save button
+    *
+    * */
 
     public void changeVisibility()
     {
@@ -434,8 +452,6 @@ public class MainActivity extends AppCompatActivity
         editButton.setVisibility(View.GONE);
         ImageButton saveButton = (ImageButton)findViewById(R.id.saveButton);
         saveButton.setVisibility(View.GONE);
-
-
 
     }
 

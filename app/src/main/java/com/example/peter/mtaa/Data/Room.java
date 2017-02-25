@@ -6,6 +6,12 @@ import java.util.Date;
  * Created by Peter on 23/Feb/17.
  */
 
+/*
+
+    Class for Room object
+
+ */
+
 public class Room {
 
     public Room()

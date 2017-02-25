@@ -37,17 +37,18 @@ public class parseJSON {
             return;
         }
 
-
-
         switch(what)
         {
             case "Rooms": parseRoom(myObject);
 
         }
-
-
-
     }
+
+    /*
+    *
+    *   Fubction for parsing rooms from JSON into list of rooms
+    *
+    * */
 
     public void parseRoom(JSONObject myObject)  {
         ArrayList<Room> listRoom = new ArrayList<>();
@@ -79,12 +80,6 @@ public class parseJSON {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
     }
-
-
-
 
 }

@@ -25,6 +25,12 @@ import java.util.List;
             super(context, resource, items);
         }
 
+         /*
+          *
+          * Adapter for adding rooms into the gui
+          *
+          * */
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -63,9 +69,5 @@ import java.util.List;
 
             return v;
         }
-
-
-
-
 
 }

@@ -21,7 +21,11 @@ public class bedsAdapter extends ArrayAdapter {
         super(context, resource, items);
     }
 
-
+    /*
+    *
+    * Adapter for adding list of beds into the gui
+    *
+    * */
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

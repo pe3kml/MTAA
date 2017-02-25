@@ -6,6 +6,10 @@ import java.util.ArrayList;
  * Created by Peter on 23/Feb/17.
  */
 
+/*
+    Hostels enums
+ */
+
 public enum hostelEnum {
     Mladost(0, "Mladost"),
     Sturak(1, "Sturak"),
@@ -41,7 +45,6 @@ public enum hostelEnum {
         return tax.getValue();
     }
 
-
     public String getName() {
         return name;
     }
@@ -60,8 +63,5 @@ public enum hostelEnum {
         }
         return zoznam;
     }
-
-
-
 
 }

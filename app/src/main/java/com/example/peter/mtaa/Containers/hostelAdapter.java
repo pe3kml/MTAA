@@ -1,7 +1,6 @@
 package com.example.peter.mtaa.Containers;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,11 @@ public class hostelAdapter extends ArrayAdapter{
         super(context, resource, items);
     }
 
+     /*
+    *
+    * Adapter for adding enums of hostels into the gui
+    *
+    * */
 
 
     @Override

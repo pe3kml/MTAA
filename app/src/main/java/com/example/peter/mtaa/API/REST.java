@@ -36,10 +36,12 @@ public class REST
         //client.setBasicAuth();
     }
 
+    /*
+    *  Calling rest get 
+    *
+    * */
     public void restinit(final String http, final RequestParams params, String arg)
     {
-
-
         Log.e("JSON","Parse");
         //bude treba dorobit nejaky znak ze to nacitava zo servera
         String url = new String("http://api.backendless.com/v1/data/"+http+arg);
@@ -59,8 +61,14 @@ public class REST
         });
 
     }
+    
+    /*
+    *  Calling rest put for update
+    *
+    * */
+    
 
-    public void post(Room selected) throws JSONException {
+    public void put(Room selected) throws JSONException {
         JSONObject jsonParams = new JSONObject();
 
         jsonParams.put("room_id", selected.getRoom_id());
@@ -105,7 +113,10 @@ public class REST
        // client.post(context, restApiUrl, entity, "application/json", responseHandler);
     }
 
-
+    /*
+    *  Calling rest delete for deleting room
+    *
+    * */
     public void delete(Room room)
     {
         client.delete("http://api.backendless.com/v1/data/Rooms/" + room.getObject(), new AsyncHttpResponseHandler() {
