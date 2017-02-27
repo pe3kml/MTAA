@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         btn.setVisibility(View.GONE);
 
         api = new REST(this);
+        api.restinit("Rooms", null, "");
 
 
     }
@@ -438,7 +439,7 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
         });
-        dialog.show();
+       dialog.show();
     }
 
     /*

@@ -96,7 +96,7 @@ public class REST
             e.printStackTrace();
         }
         Log.d("JSONIK",str);
-        client.put(ref_activity.getApplicationContext(), "http://api.backendless.com/v1/data/Rooms?where=objectId%3D" + selected.getObject(), entity, "application/json", new AsyncHttpResponseHandler() {
+        client.put(ref_activity.getApplicationContext(), "http://api.backendless.com/v1/data/Rooms/" + selected.getObject(), entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Put", Integer.toString(statusCode));
