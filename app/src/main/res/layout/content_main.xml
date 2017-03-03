@@ -17,6 +17,10 @@
         android:id="@+id/detail1"
         layout="@layout/detailroom"/>
 
+    <include
+        android:id="@+id/nova"
+        layout="@layout/new_room"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

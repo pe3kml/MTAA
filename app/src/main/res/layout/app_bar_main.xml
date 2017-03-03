@@ -42,6 +42,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="69dp"
+        android:layout_height="99dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:id="@+id/plusButton"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        app:rippleColor="@android:color/transparent" />
+
     <include layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>

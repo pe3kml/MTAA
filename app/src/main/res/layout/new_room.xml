@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/addroom">
+
+        <!--app:srcCompat="@android:drawable/ic_menu_gallery"-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/pridaj">
+
+                <ImageView
+                    android:layout_width="383dp"
+                    android:layout_height="187dp"
+                    app:srcCompat="@android:drawable/ic_menu_crop"
+                    android:id="@+id/imageDetail1" />
+
+                <TextView
+                    android:text="Hostel:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="Sturak"
+                    android:ems="10"
+                    android:id="@+id/addhostel"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <TextView
+                    android:text="Price:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="11"
+                    android:ems="10"
+                    android:id="@+id/addprice"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <TextView
+                    android:text="Number of beds:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="1"
+                    android:ems="10"
+                    android:id="@+id/addbeds"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="yes"
+                    android:ems="10"
+                    android:id="@+id/addreconstructed"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <TextView
+                    android:text="Owner:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView4"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="me@a.sk"
+                    android:ems="10"
+                    android:id="@+id/addowner"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <TextView
+                    android:text="Internet:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView5"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="yes"
+                    android:ems="10"
+                    android:id="@+id/addinternet"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+
+                <TextView
+                    android:text="More info:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView6"
+                    android:height="20dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="Info"
+                    android:ems="10"
+                    android:id="@+id/addinfo"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:contextClickable="true"
+                    android:enabled="true"
+                    android:textColorLink="?attr/actionModeSplitBackground" />
+            </LinearLayout>
+        </ScrollView>
+
+    </TableRow>
+</TableLayout>

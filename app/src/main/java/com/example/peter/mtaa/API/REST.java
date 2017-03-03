@@ -1,6 +1,8 @@
 package com.example.peter.mtaa.API;
 
+import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.peter.mtaa.Activity.MainActivity;
 import com.example.peter.mtaa.Data.Room;
@@ -42,6 +44,11 @@ public class REST
     * */
     public void restinit(final String http, final RequestParams params, String arg)
     {
+        if(!ref_activity.isOnline()){
+            ref_activity.alertSuccess("No internet");
+            return;
+        }
+
         Log.e("JSON","Parse");
         //bude treba dorobit nejaky znak ze to nacitava zo servera
         String url = new String("http://api.backendless.com/v1/data/"+http+arg);
@@ -56,7 +63,7 @@ public class REST
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-               ref_activity.alertSuccess("No internet");
+                ref_activity.alertSuccess("Bad request");
             }
         });
 
@@ -69,6 +76,13 @@ public class REST
     
 
     public void put(Room selected) throws JSONException {
+
+        if(!ref_activity.isOnline()){
+            ref_activity.alertSuccess("No internet");
+            return;
+        }
+
+
         JSONObject jsonParams = new JSONObject();
 
         jsonParams.put("room_id", selected.getRoom_id());
@@ -100,17 +114,18 @@ public class REST
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Put", Integer.toString(statusCode));
+                Toast.makeText(ref_activity, "Action successful", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("Put",Integer.toString(statusCode));
-                ref_activity.alertSuccess("No internet");
+                ref_activity.alertSuccess("Bad request");
             }
         });
 
 
-       // client.post(context, restApiUrl, entity, "application/json", responseHandler);
+
     }
 
     /*
@@ -119,6 +134,11 @@ public class REST
     * */
     public void delete(Room room)
     {
+        if(!ref_activity.isOnline()){
+            ref_activity.alertSuccess("No internet");
+            return;
+        }
+
         client.delete("http://api.backendless.com/v1/data/Rooms/" + room.getObject(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -130,11 +150,67 @@ public class REST
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("Delete",Integer.toString(statusCode));
+                ref_activity.alertSuccess("Bad request");
             }
         });
     }
 
+    /*
+    *
+    *  Calling post method
+    *
+    * */
 
+    public void post(Room selected) throws JSONException {
+
+        if(!ref_activity.isOnline()){
+            ref_activity.alertSuccess("No internet");
+            return;
+        }
+
+        JSONObject jsonParams = new JSONObject();
+
+        //jsonParams.put("room_id", selected.getRoom_id());
+       // jsonParams.put("image", null);
+        jsonParams.put("actual", false);
+        jsonParams.put("reconstructed", selected.isReconstructed());
+        int cislo = hostelEnum.getInt(hostelEnum.getByName(selected.getHostel()));
+        jsonParams.put("hostel", cislo);
+        //jsonParams.put("created", selected.getc);
+        //jsonParams.put("dateRealesed", selected.getRoom_id());
+      //  jsonParams.put("ownerId", null);
+        Time now = new Time();
+        jsonParams.put("price", selected.getPrice());
+        jsonParams.put("beds", selected.getBeds());
+        //jsonParams.put("updated", selected.getRoom_id());
+        //jsonParams.put("objectId", selected.get);
+        jsonParams.put("internet", selected.isInternet());
+        jsonParams.put("username", selected.getUsername());
+        jsonParams.put("info", selected.getInfo());
+
+        String str = jsonParams.toString();
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(str);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("JSONIK", str);
+        client.post(ref_activity.getApplicationContext(), "http://api.backendless.com/v1/data/Rooms", entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Put", Integer.toString(statusCode));
+                Toast.makeText(ref_activity, "Added succesfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Put", Integer.toString(statusCode));
+                ref_activity.alertSuccess("Bad request");
+            }
+        });
+
+    }
 
 
 }

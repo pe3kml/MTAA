@@ -60,13 +60,13 @@ public class parseJSON {
                 JSONObject finall = myArray.getJSONObject(i);
                 Room room = new Room();
                 room.setActual(finall.getBoolean("actual"));
-                room.setRoom_id(finall.getInt("room_id"));
+                //room.setRoom_id(finall.getInt("room_id"));
                 room.setUsername(finall.getString("username"));
                 room.setReconstructed(finall.getBoolean("reconstructed"));
                 room.setPrice(finall.getDouble("price"));
                 room.setInternet(finall.getBoolean("internet"));
                 room.setInfo(finall.getString("info"));
-                room.setImage(null);
+                room.setImage(finall.getString("image"));
                 room.setDate(null);
                 room.setBeds(finall.getInt("beds"));
                 room.setHostel(hostelEnum.getByValue(finall.getInt("hostel")).toString());

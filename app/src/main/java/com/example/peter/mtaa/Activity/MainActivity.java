@@ -1,7 +1,14 @@
 package com.example.peter.mtaa.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,11 +23,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
@@ -33,6 +43,10 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static com.example.peter.mtaa.R.id.List;
@@ -54,8 +68,14 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout a = (LinearLayout) findViewById(R.id.detail1);
         a.setVisibility(View.INVISIBLE);
-        LinearLayout b = (LinearLayout) findViewById(R.id.detail1);
-        a.setVisibility(View.INVISIBLE);
+       // LinearLayout b = (LinearLayout) findViewById(R.id.detail1);
+       // a.setVisibility(View.INVISIBLE);
+
+        LinearLayout c = (LinearLayout) findViewById(R.id.nova);
+        c.setVisibility(View.INVISIBLE);
+
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,9 +94,125 @@ public class MainActivity extends AppCompatActivity
         btn.setVisibility(View.GONE);
 
         api = new REST(this);
+
+        Button reserve = (Button)findViewById(R.id.reserve);
+        reserve.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                selected.setActual(true);
+                try {
+                    api.put(selected);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        FloatingActionButton myFab = (FloatingActionButton)findViewById(R.id.plusButton);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                ImageButton editButton = (ImageButton)findViewById(R.id.editButton);
+                editButton.setVisibility(View.GONE);
+                ImageButton saveButton = (ImageButton)findViewById(R.id.saveButton);
+                saveButton.setVisibility(View.GONE);
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                toolbar.setTitle("Add new room");
+
+                LinearLayout f = (LinearLayout) findViewById(R.id.detail1);
+                f.setVisibility(View.GONE);
+
+                LinearLayout a = (LinearLayout) findViewById(R.id.nova);
+                a.setVisibility(View.VISIBLE);
+                ImageButton btn = (ImageButton) findViewById(R.id.saveButton);
+                btn.setVisibility(View.VISIBLE);
+
+                ListView b = (ListView) findViewById(R.id.List);
+                b.setVisibility(View.GONE);
+                btn.setSaveEnabled(true);
+
+                final GestureDetector gestureDetector2 = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+
+                        int i=0;
+                        Room selected = new Room();
+
+                        TextView a = (TextView)findViewById(R.id.addhostel);
+                        selected.setHostel( a.getText().toString());
+                        a = (TextView)findViewById(R.id.addprice);
+
+                        try{
+                            selected.setPrice(Double.parseDouble(a.getText().toString()));
+                        }
+                        catch(NumberFormatException excep){
+                            i++;
+                        }
+
+                        a = (TextView)findViewById(R.id.addbeds);
+
+                        try{
+                            selected.setBeds(Integer.parseInt(a.getText().toString()));
+
+                        }
+                        catch(NumberFormatException excep){
+                            i++;
+                        }
+
+
+                        a = (TextView)findViewById(R.id.addreconstructed);
+                        if(a.getText().toString().toLowerCase().equals("yes"))
+                            selected.setReconstructed(true);
+                        else selected.setReconstructed(false);
+
+                        a = (TextView)findViewById(R.id.addowner);
+                        selected.setUsername(a.getText().toString());
+
+                        a = (TextView)findViewById(R.id.addinternet);
+                        if(a.getText().toString().toLowerCase().equals("yes"))
+                            selected.setInternet(true);
+                        else selected.setInternet(false);
+
+                        a = (TextView)findViewById(R.id.addinfo);
+                        selected.setInfo(a.getText().toString());
+
+
+                        try {
+                            if(i==0) api.post(selected);
+                            else  Toast.makeText(MainActivity.this, "Bad number format", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                        return true;
+                    }
+
+                });
+
+                btn.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        return gestureDetector2.onTouchEvent(event);
+                    }
+                });
+                btn.setSaveEnabled(false);
+
+            }
+        });
+
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
         api.restinit("Rooms", null, "");
-
-
     }
 
     @Override
@@ -157,6 +293,7 @@ public class MainActivity extends AppCompatActivity
      */
 
     public void writeBeds() {
+
         changeVisibility();
 
         listview.setVisibility(View.VISIBLE);
@@ -166,7 +303,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Number of beds");
         ArrayList<Integer> zoznam = new ArrayList<Integer>();
-        for(int i = 0; i < 7; i++)
+        for(int i = 1; i < 7; i++)
             zoznam.add(i);
         listview = (ListView)findViewById(List);
         bedsAdapter hostel_adapter = new bedsAdapter(this, R.layout.beds, zoznam);
@@ -305,6 +442,12 @@ public class MainActivity extends AppCompatActivity
 
     public void showDetails(final Room selected)
     {
+        LinearLayout c = (LinearLayout) findViewById(R.id.nova);
+        c.setVisibility(View.INVISIBLE);
+
+        Button reserve = (Button)findViewById(R.id.reserve);
+        if(selected.isActual()) reserve.setClickable(false);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Detail");
         EditText set = (EditText)findViewById(R.id.hostel);
@@ -324,6 +467,8 @@ public class MainActivity extends AppCompatActivity
 
         ImageButton btn = (ImageButton) findViewById(R.id.editButton);
         ImageButton btn2 = (ImageButton) findViewById(R.id.saveButton);
+
+        showImage(selected.getImage());
 
         btn.setVisibility(View.VISIBLE);
         final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -372,16 +517,30 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
 
+                int i = 0;
                 TextView a = (TextView)findViewById(R.id.hostel);
                 selected.setHostel( a.getText().toString());
                 a.setEnabled(false);
                 a.setClickable(false);
                 a = (TextView)findViewById(R.id.price);
-                selected.setPrice(Double.parseDouble(a.getText().toString()));
+                try{
+                    selected.setPrice(Double.parseDouble(a.getText().toString()));
+                }
+                catch(NumberFormatException excep){
+                    i++;
+                }
+
+
                 a.setEnabled(false);
                 a.setClickable(false);
                 a = (TextView)findViewById(R.id.beds);
-                selected.setBeds(Integer.parseInt(a.getText().toString()));
+                try{
+                    selected.setBeds(Integer.parseInt(a.getText().toString()));
+                }
+                catch(NumberFormatException excep){
+                    i++;
+                }
+
                 a.setEnabled(false);
                 a.setClickable(false);
                 a = (TextView)findViewById(R.id.reconstructed);
@@ -406,7 +565,8 @@ public class MainActivity extends AppCompatActivity
                 a.setClickable(false);
 
                 try {
-                    api.put(selected);
+                    if(i==0) api.put(selected);
+                    else Toast.makeText(MainActivity.this, "Bad number format", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
@@ -425,6 +585,8 @@ public class MainActivity extends AppCompatActivity
         btn2.setSaveEnabled(false);
 
     }
+
+
 
     /*
     *   Alert for showing message
@@ -453,8 +615,47 @@ public class MainActivity extends AppCompatActivity
         editButton.setVisibility(View.GONE);
         ImageButton saveButton = (ImageButton)findViewById(R.id.saveButton);
         saveButton.setVisibility(View.GONE);
+        LinearLayout a = (LinearLayout) findViewById(R.id.nova);
+        a.setVisibility(View.GONE);
 
     }
+
+
+    public void showImage(String fileUrl){
+        try {
+
+            Bitmap bitmap = image(fileUrl);
+            ImageView img = (ImageView)findViewById(R.id.imageDetail);
+            img.setImageBitmap(bitmap);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private static Bitmap image(String url) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+            return bitmap;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("ERROR");
+        return null;
+    }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 
 
 }
