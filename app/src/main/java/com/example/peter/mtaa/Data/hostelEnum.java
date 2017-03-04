@@ -1,5 +1,7 @@
 package com.example.peter.mtaa.Data;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -37,7 +39,13 @@ public enum hostelEnum {
 
     public static hostelEnum getByName(String string)
     {
-        return hostelEnum.valueOf(string);
+        try{
+            return hostelEnum.valueOf(string);
+        }catch(Exception e)
+        {
+            Log.i("","");
+        }
+        return null;
     }
 
     public static int getInt(hostelEnum a) {

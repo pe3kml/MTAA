@@ -174,6 +174,12 @@ public class REST
        // jsonParams.put("image", null);
         jsonParams.put("actual", false);
         jsonParams.put("reconstructed", selected.isReconstructed());
+        hostelEnum a = hostelEnum.getByName(selected.getHostel());
+        if(a == null)
+        {
+            Toast.makeText(ref_activity, "Bad input", Toast.LENGTH_SHORT).show();
+            return;
+        }
         int cislo = hostelEnum.getInt(hostelEnum.getByName(selected.getHostel()));
         jsonParams.put("hostel", cislo);
         //jsonParams.put("created", selected.getc);
