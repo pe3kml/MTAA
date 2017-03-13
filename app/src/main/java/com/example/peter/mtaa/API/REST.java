@@ -89,7 +89,15 @@ public class REST
         jsonParams.put("image", null);
         jsonParams.put("actual", selected.isActual());
         jsonParams.put("reconstructed", selected.isReconstructed());
-        int cislo = hostelEnum.getInt(hostelEnum.getByName(selected.getHostel()));
+
+
+        hostelEnum a = hostelEnum.getByName(selected.getHostel());
+        if(a == null)
+        {
+            Toast.makeText(ref_activity, "Bad input", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int cislo = hostelEnum.getInt(a);
         jsonParams.put("hostel", cislo);
         //jsonParams.put("created", selected.getc);
         //jsonParams.put("dateRealesed", selected.getRoom_id());
