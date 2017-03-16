@@ -1,8 +1,10 @@
 package com.example.peter.mtaa.Activity;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.peter.mtaa.API.ConnectivityChangeReceiver;
 import com.example.peter.mtaa.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -34,6 +37,13 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        registerReceiver(
+                new ConnectivityChangeReceiver(),
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION));
+
+
     }
 
     /*

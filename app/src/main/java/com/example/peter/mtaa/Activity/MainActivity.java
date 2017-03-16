@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.peter.mtaa.API.DatabaseHelper;
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
 import com.example.peter.mtaa.Containers.bedsAdapter;
@@ -57,12 +58,16 @@ public class MainActivity extends AppCompatActivity
     public REST api;
     ListView listview;
     Room selected;
+    DatabaseHelper myDb;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myDb = new DatabaseHelper(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
