@@ -2,6 +2,7 @@ package com.example.peter.mtaa.Activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -32,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.peter.mtaa.API.ConnectivityChangeReceiver;
 import com.example.peter.mtaa.API.DatabaseHelper;
 import com.example.peter.mtaa.API.REST;
 import com.example.peter.mtaa.Containers.RoomAdapter;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     public REST api;
     ListView listview;
     Room selected;
-    DatabaseHelper myDb;
+    public DatabaseHelper myDb;
 
 
     @Override
@@ -66,7 +68,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myDb = new DatabaseHelper(this);
+        registerReceiver(
+                new ConnectivityChangeReceiver(this),
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION));
+
+
+        myDb = new DatabaseHelper(this, this);
+
+       // myDb.onUpgrade(myDb.getWritableDatabase(), 0, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -217,7 +227,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        api.restinit("Rooms", null, "");
+        api.restinit("Rooms", null, "", false);
     }
 
     @Override
@@ -271,7 +281,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_room) {
             Log.e("Clicked","Parse");
             //findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-           api.restinit("Rooms", params, "");
+           api.restinit("Rooms", params, "", false);
 
         } else if (id == R.id.nav_hostel) {
             writeHostels();
@@ -323,7 +333,7 @@ public class MainActivity extends AppCompatActivity
                 //Log.d("Selected Hostel",Integer.toString(position));
                 RequestParams params = new RequestParams();
                 //params.put("hostel", sendback.getValue());
-                api.restinit("Rooms", params, "?where=beds%3D"+selected.toString());
+                api.restinit("Rooms", params, "?where=beds%3D"+selected.toString(), false);
 
             }
         });
@@ -360,7 +370,7 @@ public class MainActivity extends AppCompatActivity
                 hostelEnum sendback = hostelEnum.getByName(selected);
                 RequestParams params = new RequestParams();
                 //params.put("hostel", sendback.getValue());
-                api.restinit("Rooms", params, "?where=hostel%3D"+Integer.toString(sendback.getValue()));
+                api.restinit("Rooms", params, "?where=hostel%3D"+Integer.toString(sendback.getValue()), false);
 
             }
         });
@@ -452,6 +462,7 @@ public class MainActivity extends AppCompatActivity
 
         Button reserve = (Button)findViewById(R.id.reserve);
         if(selected.isActual()) reserve.setClickable(false);
+        else reserve.setClickable(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Detail");
@@ -661,8 +672,23 @@ public class MainActivity extends AppCompatActivity
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    public void callUpgrade()
+    {
+        myDb.onUpgrade(myDb.getWritableDatabase(),0,0);
+        api.restinit("Rooms", null, "", true);
 
 
+    }
+
+    public void addToSql(ArrayList<Room> listRoom) {
+
+        for(int i = 0; i < listRoom.size(); i++)
+        {
+            myDb.insertData(listRoom.get(i));
+        }
+
+
+    }
 }
 
 

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.peter.mtaa.Activity.MainActivity;
 import com.example.peter.mtaa.Data.Room;
 import com.example.peter.mtaa.Data.hostelEnum;
 
@@ -30,104 +31,98 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_10 = "actual";
 
 
-    public DatabaseHelper(Context context)
-    {
+
+    public DatabaseHelper(Context context, MainActivity ref_activity) {
         super(context, DATABASE_NAME, null, 1);
         SQLiteDatabase db = this.getWritableDatabase();
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db){
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + "( username TEXT, object_id text, reconstructed integer, price double, internet integer, info TEXT, image text, hostel integer, beds integer, actual integer)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean insertData(Room room)
-    {
+    public boolean insertData(Room room) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, room.getUsername());
-        contentValues.put(COL_2, room.getRoom_id());
-        if(room.isReconstructed())contentValues.put(COL_3, 1);
+        contentValues.put(COL_2, room.getObject());
+        if (room.isReconstructed()) contentValues.put(COL_3, 1);
         else contentValues.put(COL_3, 0);
         contentValues.put(COL_4, room.getPrice());
-        if(room.isInternet())contentValues.put(COL_5, 1);
+        if (room.isInternet()) contentValues.put(COL_5, 1);
         else contentValues.put(COL_5, 1);
         contentValues.put(COL_6, room.getInfo());
         contentValues.put(COL_7, room.getImage());
         contentValues.put(COL_8, hostelEnum.getInt(hostelEnum.getByName(room.getHostel())));
         contentValues.put(COL_9, room.getBeds());
-        if(room.isActual()) contentValues.put(COL_10, 1);
+        if (room.isActual()) contentValues.put(COL_10, 1);
         else contentValues.put(COL_10, 0);
         long result = db.insert(TABLE_NAME, null, contentValues);
-        if(result == -1)return false;
+        if (result == -1) return false;
         else return true;
     }
 
-    public ArrayList<Room> getAllData()
-    {
-        ArrayList<Room> listRoom = new ArrayList<>();
+    ArrayList<Room> listRoom;
+    public ArrayList<Room> getAllData() {
+         listRoom = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+ TABLE_NAME, null);
-        if(res.getCount() != 0)
-        {
-            while (res.moveToNext())
-            {
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (res.getCount() != 0) {
+            while (res.moveToNext()) {
                 Room room = new Room();
                 room.setUsername(res.getString(0));
                 room.setObject(res.getString(1));
-                if(res.getInt(2) == 1) room.setReconstructed(true);
+                if (res.getInt(2) == 1) room.setReconstructed(true);
                 else room.setReconstructed(false);
                 room.setPrice(res.getDouble(3));
-                if(res.getInt(4) == 1) room.setInternet(true);
+                if (res.getInt(4) == 1) room.setInternet(true);
                 else room.setInternet(false);
                 room.setInfo(res.getString(5));
                 room.setImage(res.getString(6));
                 room.setHostel(hostelEnum.getByValue(res.getInt(7)).toString());
                 room.setBeds(res.getInt(8));
-                if(res.getInt(9) == 1) room.setActual(true); //skontroluj si tie hodnoty
+                if (res.getInt(9) == 1) room.setActual(true); //skontroluj si tie hodnoty
                 else room.setActual(false);
-
+                listRoom.add(room);
             }
             return listRoom;
         }
 
-        return null;
+        return listRoom;
     }
 
-    public boolean update(Room room)
-    {
+    public boolean update(Room room) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, room.getUsername());
         contentValues.put(COL_2, room.getRoom_id());
-        if(room.isReconstructed())contentValues.put(COL_3, 1);
+        if (room.isReconstructed()) contentValues.put(COL_3, 1);
         else contentValues.put(COL_3, 0);
         contentValues.put(COL_4, room.getPrice());
-        if(room.isInternet())contentValues.put(COL_5, 1);
+        if (room.isInternet()) contentValues.put(COL_5, 1);
         else contentValues.put(COL_5, 1);
         contentValues.put(COL_6, room.getInfo());
         contentValues.put(COL_7, room.getImage());
         contentValues.put(COL_8, hostelEnum.getInt(hostelEnum.getByName(room.getHostel())));
         contentValues.put(COL_9, room.getBeds());
-        if(room.isActual()) contentValues.put(COL_10, 1);
+        if (room.isActual()) contentValues.put(COL_10, 1);
         else contentValues.put(COL_10, 0);
 
         db.update(TABLE_NAME, contentValues, "object_id = ?", new String[]{room.getObject()});
         return true;
     }
 
-    public Integer delete(Room room)
-    {
+    public Integer delete(Room room) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME,"object_id = ?", new String[]{room.getObject()});
+        return db.delete(TABLE_NAME, "object_id = ?", new String[]{room.getObject()});
     }
-
 
 
 }

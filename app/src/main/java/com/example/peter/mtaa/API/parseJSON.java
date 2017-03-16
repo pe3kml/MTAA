@@ -26,7 +26,7 @@ public class parseJSON {
         this.ref_activity = ref_activity;
     }
 
-    public void parse(String response, String what)
+    public void parse(String response, String what, boolean sql)
     {
         JSONObject myObject = null;
         try {
@@ -39,7 +39,7 @@ public class parseJSON {
 
         switch(what)
         {
-            case "Rooms": parseRoom(myObject);
+            case "Rooms": parseRoom(myObject, false);
 
         }
     }
@@ -50,7 +50,7 @@ public class parseJSON {
     *
     * */
 
-    public void parseRoom(JSONObject myObject)  {
+    public void parseRoom(JSONObject myObject, boolean sql)  {
         ArrayList<Room> listRoom = new ArrayList<>();
         JSONArray myArray = null;
         try {
@@ -75,7 +75,9 @@ public class parseJSON {
                 listRoom.add(room);
             }
 
-            ref_activity.writeListRoom(listRoom);
+            ref_activity.addToSql(listRoom);
+            if(!sql) ref_activity.writeListRoom(listRoom);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

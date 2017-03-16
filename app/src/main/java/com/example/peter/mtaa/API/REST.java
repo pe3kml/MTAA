@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -28,6 +29,7 @@ public class REST
 {
     MainActivity ref_activity;
     AsyncHttpClient client;
+   // DatabaseHelper databse;
 
     public REST(MainActivity ref_activity)
     {
@@ -36,16 +38,20 @@ public class REST
         client.addHeader("application-id", "0E4865CB-A0FD-8F5F-FF5D-0F10B0B9D700");
         client.addHeader("secret-key", "23A31933-17C5-5F99-FF5F-1549AB601300");
         //client.setBasicAuth();
+
     }
 
     /*
-    *  Calling rest get 
+    *  Calling rest get - if no internet call from SQLite
     *
     * */
-    public void restinit(final String http, final RequestParams params, String arg)
+    public void restinit(final String http, final RequestParams params, String arg, final boolean sql)
     {
         if(!ref_activity.isOnline()){
-            ref_activity.alertSuccess("No internet");
+
+            ArrayList<Room> listRoom = ref_activity.myDb.getAllData();
+            if(listRoom != null) ref_activity.writeListRoom(listRoom);
+            //ref_activity.alertSuccess("No internet");
             return;
         }
 
@@ -57,7 +63,7 @@ public class REST
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
                 parseJSON parse = new parseJSON(ref_activity);
-                parse.parse(response, http);
+                parse.parse(response, http, sql);
 
             }
 
@@ -70,7 +76,7 @@ public class REST
     }
     
     /*
-    *  Calling rest put for update
+    *  Calling rest put for update and update to SQLite if no internet connection
     *
     * */
     
@@ -78,7 +84,8 @@ public class REST
     public void put(Room selected) throws JSONException {
 
         if(!ref_activity.isOnline()){
-            ref_activity.alertSuccess("No internet");
+            ref_activity.myDb.update(selected);
+            //ref_activity.alertSuccess("No internet");
             return;
         }
 
@@ -137,13 +144,14 @@ public class REST
     }
 
     /*
-    *  Calling rest delete for deleting room
+    *  Calling rest delete for deleting room and delete into SQLite if no internet
     *
     * */
     public void delete(Room room)
     {
         if(!ref_activity.isOnline()){
-            ref_activity.alertSuccess("No internet");
+            ref_activity.myDb.delete(room);
+            //ref_activity.alertSuccess("No internet");
             return;
         }
 
@@ -152,7 +160,7 @@ public class REST
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Delete", Integer.toString(statusCode));
                 ref_activity.alertSuccess("Delete successfull");
-                restinit("Rooms", null, "");
+                restinit("Rooms", null, "", false);
             }
 
             @Override
@@ -165,14 +173,15 @@ public class REST
 
     /*
     *
-    *  Calling post method
+    *  Calling post method or insert into SQLite if no internet
     *
     * */
 
     public void post(Room selected) throws JSONException {
 
         if(!ref_activity.isOnline()){
-            ref_activity.alertSuccess("No internet");
+            ref_activity.myDb.insertData(selected);
+            //ref_activity.alertSuccess("No internet");
             return;
         }
 
@@ -225,6 +234,10 @@ public class REST
         });
 
     }
+
+
+
+
 
 
 }
