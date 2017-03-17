@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.peter.mtaa.Activity.MainActivity;
 import com.example.peter.mtaa.Data.Room;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "SQLite";
-    public static final String TABLE_NAME = "Rooms";
+    public static final String TABLE_NAME = "Room";
     public static final String COL_1 = "username";
     public static final String COL_2 = "object_id";
     public static final String COL_3 = "reconstructed";
@@ -29,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_8 = "hostel";
     public static final String COL_9 = "beds";
     public static final String COL_10 = "actual";
+    public static  final String COL_11 = "action";
 
 
 
@@ -39,14 +41,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "( username TEXT, object_id text, reconstructed integer, price double, internet integer, info TEXT, image text, hostel integer, beds integer, actual integer)");
+        Log.d("Console","Creating off table");
+        db.execSQL("create table " + TABLE_NAME + "( username TEXT, object_id text, reconstructed integer, price double, internet integer, info TEXT, image text, hostel integer, beds integer, actual integer, action integer)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d("Console","Dropping off table");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+
 
     public boolean insertData(Room room) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -64,13 +69,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_9, room.getBeds());
         if (room.isActual()) contentValues.put(COL_10, 1);
         else contentValues.put(COL_10, 0);
+        contentValues.put(COL_11, room.getAction());
+
         long result = db.insert(TABLE_NAME, null, contentValues);
         if (result == -1) return false;
         else return true;
     }
 
     ArrayList<Room> listRoom;
+
     public ArrayList<Room> getAllData() {
+        Log.d("Console","Getting off data from table");
          listRoom = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -90,9 +99,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 room.setBeds(res.getInt(8));
                 if (res.getInt(9) == 1) room.setActual(true); //skontroluj si tie hodnoty
                 else room.setActual(false);
+                room.setAction(res.getInt(10));
                 listRoom.add(room);
             }
-            return listRoom;
         }
 
         return listRoom;
@@ -102,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1, room.getUsername());
-        contentValues.put(COL_2, room.getRoom_id());
+        contentValues.put(COL_2, room.getObject());
         if (room.isReconstructed()) contentValues.put(COL_3, 1);
         else contentValues.put(COL_3, 0);
         contentValues.put(COL_4, room.getPrice());
@@ -114,6 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_9, room.getBeds());
         if (room.isActual()) contentValues.put(COL_10, 1);
         else contentValues.put(COL_10, 0);
+        contentValues.put(COL_11, room.getAction());
 
         db.update(TABLE_NAME, contentValues, "object_id = ?", new String[]{room.getObject()});
         return true;
@@ -121,7 +131,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Integer delete(Room room) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "object_id = ?", new String[]{room.getObject()});
+        room.setAction(3);
+        update(room);
+        //return db.delete(TABLE_NAME, "object_id = ?", new String[]{room.getObject()});
+        return 1;
     }
 
 

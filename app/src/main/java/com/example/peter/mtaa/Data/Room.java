@@ -32,10 +32,16 @@ public class Room {
     private int beds;
     private boolean actual;
     private String object;
+    private int action;
 
-    public String getObject() {
-        return object;
+
+    public int getAction() {
+        return action;
     }
+
+    public void setAction(int action) {this.action = action;}
+
+    public String getObject() {return object;}
 
     public void setObject(String object) {
         this.object = object;

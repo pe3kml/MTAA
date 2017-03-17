@@ -395,6 +395,7 @@ public class MainActivity extends AppCompatActivity
 
         RoomAdapter room_adapter = new RoomAdapter(this, R.layout.listroomraw, listRoom);
         //customAdapter.notifyAll();
+
         listview.setAdapter(room_adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -674,6 +675,20 @@ public class MainActivity extends AppCompatActivity
 
     public void callUpgrade()
     {
+        ArrayList<Room> listRoom = myDb.getAllData();
+        for(int i = 0; i < listRoom.size(); i++)
+        {
+            try {
+                if(listRoom.get(i).getAction()==1)
+                    api.post(listRoom.get(i));
+                if(listRoom.get(i).getAction()==2)api.put(listRoom.get(i));
+                if(listRoom.get(i).getAction()==3)api.delete(listRoom.get(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("Console","May inserting to SQLite");
         myDb.onUpgrade(myDb.getWritableDatabase(),0,0);
         api.restinit("Rooms", null, "", true);
 
@@ -682,9 +697,13 @@ public class MainActivity extends AppCompatActivity
 
     public void addToSql(ArrayList<Room> listRoom) {
 
+        Log.e("Console","Getting on data from table");
+
         for(int i = 0; i < listRoom.size(); i++)
         {
-            myDb.insertData(listRoom.get(i));
+            Room room = listRoom.get(i);
+            room.setAction(0);
+            myDb.insertData(room);
         }
 
 

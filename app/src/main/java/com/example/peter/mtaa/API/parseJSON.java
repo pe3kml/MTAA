@@ -39,7 +39,7 @@ public class parseJSON {
 
         switch(what)
         {
-            case "Rooms": parseRoom(myObject, false);
+            case "Rooms": parseRoom(myObject, sql);
 
         }
     }
@@ -75,8 +75,18 @@ public class parseJSON {
                 listRoom.add(room);
             }
 
-            ref_activity.addToSql(listRoom);
-            if(!sql) ref_activity.writeListRoom(listRoom);
+            if(sql)
+            {
+                Log.d("Console","Inserting to SQLite");
+                ref_activity.addToSql(listRoom);
+            }
+            Log.d("Console","Adding to GUI list room");
+                ref_activity.writeListRoom(listRoom);
+
+               // ref_activity.writeListRoom(listRoom);
+
+
+
 
 
         } catch (JSONException e) {

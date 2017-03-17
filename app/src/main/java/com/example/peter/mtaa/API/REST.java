@@ -47,6 +47,8 @@ public class REST
     * */
     public void restinit(final String http, final RequestParams params, String arg, final boolean sql)
     {
+
+        Log.d("Console","SQLite = "+Boolean.toString(sql));
         if(!ref_activity.isOnline()){
 
             ArrayList<Room> listRoom = ref_activity.myDb.getAllData();
@@ -63,6 +65,8 @@ public class REST
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
                 parseJSON parse = new parseJSON(ref_activity);
+
+                Log.d("Console","SQLite ASYNC = "+Boolean.toString(sql));
                 parse.parse(response, http, sql);
 
             }
@@ -84,6 +88,7 @@ public class REST
     public void put(Room selected) throws JSONException {
 
         if(!ref_activity.isOnline()){
+            selected.setAction(2);
             ref_activity.myDb.update(selected);
             //ref_activity.alertSuccess("No internet");
             return;
@@ -130,6 +135,7 @@ public class REST
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Put", Integer.toString(statusCode));
                 Toast.makeText(ref_activity, "Action successful", Toast.LENGTH_SHORT).show();
+                ref_activity.callUpgrade();
             }
 
             @Override
@@ -150,6 +156,7 @@ public class REST
     public void delete(Room room)
     {
         if(!ref_activity.isOnline()){
+            room.setAction(3);
             ref_activity.myDb.delete(room);
             //ref_activity.alertSuccess("No internet");
             return;
@@ -161,6 +168,7 @@ public class REST
                 Log.i("Delete", Integer.toString(statusCode));
                 ref_activity.alertSuccess("Delete successfull");
                 restinit("Rooms", null, "", false);
+                ref_activity.callUpgrade();
             }
 
             @Override
@@ -180,6 +188,7 @@ public class REST
     public void post(Room selected) throws JSONException {
 
         if(!ref_activity.isOnline()){
+            selected.setAction(1);
             ref_activity.myDb.insertData(selected);
             //ref_activity.alertSuccess("No internet");
             return;
@@ -224,6 +233,7 @@ public class REST
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("Put", Integer.toString(statusCode));
                 Toast.makeText(ref_activity, "Added succesfully", Toast.LENGTH_SHORT).show();
+                ref_activity.callUpgrade();
             }
 
             @Override

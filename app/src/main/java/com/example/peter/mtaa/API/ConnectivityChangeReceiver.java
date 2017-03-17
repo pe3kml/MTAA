@@ -39,9 +39,13 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                 Log.v(tag, "key [" + key + "]: " +
                         extras.get(key));
             }
-            if(extras.get("networkInfo").toString().contains("DISCONNECTED"));
+            if(extras.get("networkInfo").toString().contains("DISCONNECTED"))
+            {
+                Log.d("Console","Internet OFF");
+            }
             else
             {
+                Log.d("Console","Internet ON");
                 ref_activity.callUpgrade();
             }
 

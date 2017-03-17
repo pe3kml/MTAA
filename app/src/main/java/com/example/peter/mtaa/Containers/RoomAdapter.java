@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.peter.mtaa.Data.Room;
@@ -44,17 +45,42 @@ import java.util.List;
 
             Room p = getItem(position);
 
+
+
             if (p != null) {
+
+
+
                 TextView tt1 = (TextView) v.findViewById(R.id.id);
                 TextView tt2 = (TextView) v.findViewById(R.id.categoryId);
                 TextView tt3 = (TextView) v.findViewById(R.id.description);
+                ImageView tt4 = (ImageView) v.findViewById(R.id.imageView2);
+
+
+
 
                 if (tt1 != null) {
                     tt1.setText(p.getUsername());
+                    if(p.getAction()==3)
+                    {
+                        tt1.setVisibility(View.GONE);
+                        tt2.setVisibility(View.GONE);
+                        tt3.setVisibility(View.GONE);
+                        tt4.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        tt1.setVisibility(View.VISIBLE);
+                        tt2.setVisibility(View.VISIBLE);
+                        tt3.setVisibility(View.VISIBLE);
+                        tt4.setVisibility(View.VISIBLE);
+                    }
+
                 }
 
                if (tt2 != null) {
                     tt2.setText(Integer.toString(p.getBeds()) + " lôžkova");
+
                 }
 
                 if (tt3 != null) {
@@ -65,6 +91,12 @@ import java.util.List;
                 {
                     tt1.setBackgroundColor(0xA9EB1D);
                 }
+                else
+                {
+
+                }
+
+
             }
 
             return v;
